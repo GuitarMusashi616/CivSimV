@@ -1,0 +1,150 @@
+interfaces - strategies - commands - DTO objects - database - repositories
+
+Civilization Repository?
+GameCommands?
+
+NewGame()
+CopyGame()
+
+MoveUnit()
+
+logic part of model or what?
+
+var city = Civilization.CreateCity()
+var unit = city.CreateUnit()
+
+ICiv = MakeUnit()
+
+# need an interface for strategies
+# decisions at each time step
+# many choices required - try every choice somehow
+
+
+IDecidable - AskDecisions() / MakeDecisions
+
+settle, pottery, mining, 
+
+decision
+
+decision type
+
+choices
+
+choice types, with arguments?
+
+GrowStrategy()
+
+- tiles = [ForestTile(), HillTile(), ...]
+- settler locations [(2,4), (3,3)]
+
+- var game = new Game(tiles)
+
+- var civ = game.CreateCiv(Nation.ARABIA)
+
+
+
+decisions = AskDecisions(civ)
+consequences = new List<Game>();
+for decision in decisions:
+  var game = MakeDecision(decision)
+  consequences.Add(game)
+  
+
+// exhaust every decision realistic?
+- yes for tech choice / policy choice
+- someway to cull bad decisions
+
+- limit SETTLE / MOVE decisions for settlers
+- if decision.type == SETTLE: settler_locations.pop()
+
+- if decision.type == BUILD: city_tiles.build() 
+(- improve every tile)
+(- improve just luxury tiles)
+(- improve closest tile)
+
+
+needs undo / redo or performance wont be good
+
+return commands with execute?
+how to know what commands go to which handler? Use an enum
+
+
+gets command list
+executes
+what if run out of memory?
+have undo for DFS
+
+just execute each one or how to make a decision?
+
+game.askDecisions
+
+some will be about units and others will be about tech
+- return the decision type, like chooseTech, ChooseUnitAction, etc
+- use switch statement to get further details by getting the object and casting as the type
+- object decisionMaker (TechResearch) (PolicyResearch)
+- techResearch.getChoices() - returns techChoices
+- can handle each type individually based on enum
+- then return the options to choose from
+
+NEXT
+make the command and apply them
+queue them so they can be undone
+
+ICommand
+ChooseCommand(Tech)
+
+ICommand
+EndTurnCommand()
+- EndTurn
+- UndoEndTurn
+
+
+have to undo each
+
+techResearch
+- choose(tech)
+- how to undo?
+- automatically add to the undo stack
+- that way civilization can undo last turn
+- also civilization can undo whole turn at a time so that order doesn't matter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AskDecisions()
+- Settler where to settle?
+- How to choose? - just settle for now
+
+- Tech choices: Pottery, Mining, etc
+- Social Policy choices: Oligarchy, etc
+
+- city choices: monument, granary, etc
+
+
+
+MakeDecisions()
+- return new game object with next turn given those decisions
+
+
+
+
+
+
+
